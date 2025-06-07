@@ -1,0 +1,47 @@
+body {
+    font-family: 'Georgia', serif;
+    background-color: #fefefe;
+    color: #2c2c2c;
+    margin: 0;
+    padding: 0;
+}
+
+header, footer {
+    background-color: #f4f0e6;
+    text-align: center;
+    padding: 20px;
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #2e382e;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 50px;
+    background-color: #e8e5dd;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #2e382e;
+    color: white;
+    text-decoration: none;
+}
+
+.products {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+.product {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+}
