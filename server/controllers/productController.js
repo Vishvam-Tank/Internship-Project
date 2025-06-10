@@ -1,7 +1,5 @@
-const Product = require("../models/Product");
+const Product = require("../models/productModel");
 
-// @desc    Get all products
-// @route   GET /api/products
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
