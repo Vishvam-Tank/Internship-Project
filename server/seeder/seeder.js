@@ -1,45 +1,52 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const Product = require('../models/productModel');
+const Product = require('../models/Product');
 
-dotenv.config();
-
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect('mongodb://localhost:27017/Ecommerce', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => {
-  console.log("✅ Connected to MongoDB");
-}).catch((err) => {
-  console.error("❌ Connection error:", err.message);
 });
 
-const products = [
+const dummyProducts = [
   {
-    name: "Luxury Watch",
-    image: "https://via.placeholder.com/150",
-    price: 24999,
-    description: "A classic old money style luxury watch.",
-    category: "Accessories"
+    name: 'Old Money Blazer',
+    image: 'old-money-blazzer.jpeg',
+    price: 4999,
+    description: 'Navy double-breasted wool blazer.',
+    category: 'Clothing'
   },
   {
-    name: "White Oxford Shirt",
-    image: "https://via.placeholder.com/150",
-    price: 1999,
-    description: "Premium fabric white oxford shirt.",
-    category: "Clothing"
+    name: 'Classic Loafers',
+    image: 'classic loafers.jpeg',
+    price: 2999,
+    description: 'Handmade leather old money loafers.',
+    category: 'Shoes'
+  },
+  {
+    name: 'Elegant Leather Bag',
+    image: 'Elegant-Leather-Bag.jpeg',
+    price: 3499,
+    description: 'Vintage-style leather handbag.',
+    category: 'Accessories'
+  },
+  {
+    name: 'Silk Tie',
+    image: 'Silk-Tie.jpeg',
+    price: 999,
+    description: '100% pure silk tie with striped pattern.',
+    category: 'Accessories'
   }
 ];
 
-const importData = async () => {
+async function seed() {
   try {
-    await Product.deleteMany();
-    await Product.insertMany(products);
-    console.log("✅ Sample Products Inserted!");
+    await Product.deleteMany({});
+    await Product.insertMany(dummyProducts);
+    console.log('✅ Dummy products added to MongoDB');
     process.exit();
-  } catch (error) {
-    console.error("❌ Error inserting products:", error.message);
+  } catch (err) {
+    console.error('❌ Failed to insert products:', err);
     process.exit(1);
   }
-};
+}
 
-importData();
+seed();

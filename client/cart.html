@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart | E-Kharidi</title>
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+  <header>
+    <h1>🛍️ Your Cart</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Shop</a>
+      <a href="cart.html">Cart (<span id="nav-cart-count">0</span>)</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="cart">
+      <div id="cart-items"></div>
+      <h3 id="cart-total"></h3>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 E-Kharidi. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function renderCart() {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      const container = document.getElementById('cart-items');
+      const totalEl = document.getElementById('cart-total');
+      let total = 0;
+
+      container.innerHTML = cartItems.length ? '' : '<p>Your cart is currently empty.</p>';
+      
+      cartItems.forEach((item, idx) => {
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <img src="/assets/images/${item.image}" alt="${item.name}" style="width:60px;vertical-align:middle;">
+          <strong>${item.name}</strong> - ₹${item.price} × ${item.qty} = ₹${itemTotal}
+          <button data-index="${idx}" class="remove-btn">Remove</button>
+        `;
+        container.appendChild(div);
+      });
+
+      totalEl.textContent = `Total: ₹${total}`;
+      updateNavCount();
+    }
+
+    function updateNavCount() {
+      const count = JSON.parse(localStorage.getItem('cart'))?.reduce((a, b) => a + b.qty, 0) || 0;
+      document.getElementById('nav-cart-count').innerText = count;
+    }
+
+    document.getElementById('cart-items').addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-btn')) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(e.target.dataset.index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+      }
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>

@@ -1,27 +1,30 @@
 const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/Ecommerce', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('✅ MongoDB connected'))
+.catch((err) => console.error('❌ MongoDB connection error:', err));
 
-const productRoutes = require('./routes/productRoutes');
+// API routes
 app.use('/api/products', productRoutes);
 
+// Serve static frontend
+app.use(express.static(path.join(__dirname, '..', 'client')));
+
+// Home route
 app.get('/', (req, res) => {
-  res.send('🚀 Backend is working!');
+  res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 });
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('✅ Connected to MongoDB');
-}).catch((err) => {
-  console.error('❌ MongoDB connection error:', err.message);
-});
+// Serve images
+app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
 
 module.exports = app;
